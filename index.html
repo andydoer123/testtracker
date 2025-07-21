@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,31 +37,31 @@
     </div>
   </div>
 
-<script>
-  const btcOwned = 0.03287986;
-  const originalInvestment = 3926.39;
+  <script>
+    const btcOwned = 0.03287986;
+    const originalInvestment = 3926.39;
 
-  async function updateTracker() {
-    try {
-      const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-      const data = await res.json();
-      const currentBTC = data.bitcoin.usd;
+    async function updateTracker() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const data = await res.json();
+        const currentBTC = data.bitcoin.usd;
 
-      const currentValue = btcOwned * currentBTC;
-      const gainLoss = ((currentValue - originalInvestment) / originalInvestment) * 100;
+        const currentValue = btcOwned * currentBTC;
+        const gainLoss = ((currentValue - originalInvestment) / originalInvestment) * 100;
 
-      document.getElementById("btcPrice").innerText = `Current BTC Price: $${currentBTC.toFixed(2)}`;
-      document.getElementById("investmentValue").innerText = `Current Value: $${currentValue.toFixed(2)}`;
-      document.getElementById("gainLoss").innerText = `Gain/Loss: ${gainLoss.toFixed(2)}%`;
-    } catch (err) {
-      document.getElementById("btcPrice").innerText = "Error fetching BTC price.";
-      console.error(err);
+        document.getElementById("btcPrice").innerText = `Current BTC Price: $${currentBTC.toFixed(2)}`;
+        document.getElementById("investmentValue").innerText = `Current Value: $${currentValue.toFixed(2)}`;
+        document.getElementById("gainLoss").innerText = `Gain/Loss: ${gainLoss.toFixed(2)}%`;
+      } catch (err) {
+        document.getElementById("btcPrice").innerText = "Error fetching BTC price.";
+        console.error("Fetch error:", err);
+      }
     }
-  }
 
-  updateTracker();
-  setInterval(updateTracker, 60000); // Update every 60 seconds
-</script>
-
+    updateTracker();
+    setInterval(updateTracker, 60000); // update every 60s
+  </script>
 </body>
 </html>
+
