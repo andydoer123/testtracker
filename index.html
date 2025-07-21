@@ -48,11 +48,12 @@
         const currentBTC = data.bitcoin.usd;
 
         const currentValue = btcOwned * currentBTC;
-        const gainLoss = ((currentValue - originalInvestment) / originalInvestment) * 100;
+        const gainLossAmount = currentValue - originalInvestment;
+        const gainLossPercent = (gainLossAmount / originalInvestment) * 100;
 
         document.getElementById("btcPrice").innerText = `Current BTC Price: $${currentBTC.toFixed(2)}`;
         document.getElementById("investmentValue").innerText = `Current Value: $${currentValue.toFixed(2)}`;
-        document.getElementById("gainLoss").innerText = `Gain/Loss: ${gainLoss.toFixed(2)}%`;
+        document.getElementById("gainLoss").innerText = `Gain/Loss: $${gainLossAmount.toFixed(2)} (${gainLossPercent.toFixed(2)}%)`;
       } catch (err) {
         document.getElementById("btcPrice").innerText = "Error fetching BTC price.";
         console.error("Fetch error:", err);
@@ -64,4 +65,3 @@
   </script>
 </body>
 </html>
-
