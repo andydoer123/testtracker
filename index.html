@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My BTC Investment Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .value {
+      font-size: 1.4em;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>BTC Investment Tracker</h2>
+    <div class="value" id="btcPrice">Fetching current BTC price...</div>
+    <div class="value" id="investmentValue">Calculating...</div>
+    <div class="value" id="gainLoss"></div>
+    <div style="margin-top:20px; font-size: 0.9em; color: #777;">
+      Based on: 0.03287986 BTC | Original Investment: $3,926.39
+    </div>
+  </div>
+
+  <script>
+    const btcOwned = 0.03287986;
+    const originalInvestment = 3926.39;
+
+    async function updateTracker() {
+      try {
+        const res = await fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json');
+        const data = await res.json();
+        const currentBTC = data.bpi.USD.rate_float;
+
+        const currentValue = btcOwned * currentBTC;
+        const gainLoss = ((currentValue - originalInvestment) / originalInvestment) * 100;
+
+        document.getElementById("btcPrice").innerText = `Current BTC Price: $${currentBTC.toFixed(2)}`;
+        document.getElementById("investmentValue").innerText = `Current Value: $${currentValue.toFixed(2)}`;
+        document.getElementById("gainLoss").innerText = `Gain/Loss: ${gainLoss.toFixed(2)}%`;
+      } catch (err) {
+        document.getElementById("btcPrice").innerText = "Error fetching BTC price.";
+        console.error(err);
+      }
+    }
+
+    updateTracker();
+    setInterval(updateTracker, 60000); // Update every 60 seconds
+  </script>
+</body>
+</html>
